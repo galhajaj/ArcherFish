@@ -6,6 +6,7 @@ public class FlyGenerator : MonoBehaviour
 {
     public GameObject FlyObject;
     public int FliesLinesNumber;
+    public int MinFliesInLines;
     public int MaxFliesInLines;
     /*public float MaxTimeToGenerateFly;
     public float MaxTimeToDestroyFly;
@@ -48,7 +49,8 @@ public class FlyGenerator : MonoBehaviour
         Vector3 dir = (randomScreenPosition2 - randomScreenPosition1) / (randomScreenPosition2 - randomScreenPosition1).magnitude;
 
         // create flies on projection of dir
-        for (int i = 0; i < Random.Range(0, MaxFliesInLines); ++i)
+        int fliesOnLine = Random.Range(MinFliesInLines, MaxFliesInLines);
+        for (int i = 0; i < fliesOnLine; ++i)
         {
             Vector3 randomScreenPosition = getRandomScreenPosition();
             Vector3 randomPositionOnDir = Vector3.Project(randomScreenPosition, dir);

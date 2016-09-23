@@ -5,10 +5,12 @@ using System.Collections.Generic;
 
 public class FishSpitInput : MonoBehaviour 
 {
-    /*public Text Test1Text;
-    public Text Test2Text;*/
+    public Text ScoreText;
 
     private List<Fly> _fliesSelected = new List<Fly>();
+
+    public int SpitCounter = 11;
+    public int Score = 0;
 
 	// Use this for initialization
 	void Start () 
@@ -19,6 +21,8 @@ public class FishSpitInput : MonoBehaviour
 	// Update is called once per frame
 	void Update () 
     {
+        ScoreText.text = "Score: " + Score.ToString();
+
         /*if (Input.touchCount == 1)
         {
             Touch touch1 = Input.GetTouch(0);
@@ -82,6 +86,7 @@ public class FishSpitInput : MonoBehaviour
             Vector3 secondPos = fly1Pos + dir * 100.0F;
 
             DrawLine(firstPos, secondPos, Color.blue, 0.05F);
+            SpitCounter--;
             
             _fliesSelected[1].IsSelected = false;
             _fliesSelected[0].IsSelected = false;

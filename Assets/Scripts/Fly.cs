@@ -45,6 +45,18 @@ public class Fly : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D coll)
     {
-        Destroy(this.gameObject);
+        if (coll.gameObject.GetComponent<Fly>() != null) // fly at the beginning generations
+        {
+            Destroy(this.gameObject);
+        }
+        else // spit
+        {
+            Destroy(this.gameObject.GetComponent<CircleCollider2D>());
+            this.gameObject.GetComponent<Rigidbody2D>().gravityScale = 1.0F;
+            _manager.Score += _manager.SpitCounter;
+
+            if (PlayerPrefs.GetInt("BestScore") < _manager.Score)
+                PlayerPrefs.SetInt("BestScore", _manager.Score);
+        }
     }
 }
