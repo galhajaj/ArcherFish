@@ -42,4 +42,9 @@ public class Fly : MonoBehaviour
     {
         IsSelected = !IsSelected;
     }
+
+    void OnCollisionEnter2D(Collision2D coll)
+    {
+        Destroy(this.gameObject);
+    }
 }

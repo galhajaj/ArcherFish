@@ -81,7 +81,7 @@ public class FishSpitInput : MonoBehaviour
             Vector3 firstPos = fly1Pos + dir * -100.0F;
             Vector3 secondPos = fly1Pos + dir * 100.0F;
 
-            DrawLine(firstPos, secondPos, Color.blue, 0.05F, 30000.0F);
+            DrawLine(firstPos, secondPos, Color.blue, 0.05F);
             
             _fliesSelected[1].IsSelected = false;
             _fliesSelected[0].IsSelected = false;
