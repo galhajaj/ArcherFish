@@ -5,8 +5,8 @@ using System.Collections.Generic;
 
 public class FishSpitInput : MonoBehaviour 
 {
-    public Text Test1Text;
-    public Text Test2Text;
+    /*public Text Test1Text;
+    public Text Test2Text;*/
 
     private List<Fly> _fliesSelected = new List<Fly>();
 
@@ -19,7 +19,7 @@ public class FishSpitInput : MonoBehaviour
 	// Update is called once per frame
 	void Update () 
     {
-        if (Input.touchCount == 1)
+        /*if (Input.touchCount == 1)
         {
             Touch touch1 = Input.GetTouch(0);
             Test1Text.text = Camera.main.ScreenToWorldPoint(new Vector3(touch1.position.x, touch1.position.y, 0.0F)).ToString();
@@ -39,7 +39,7 @@ public class FishSpitInput : MonoBehaviour
             vec2.z = 490.0F;
 
             DrawLine(vec1, vec2, Color.yellow, 0.05F);
-        }
+        }*/
 	}
 
     void DrawLine(Vector3 start, Vector3 end, Color color, float width, float duration = 0.2f)
@@ -53,6 +53,19 @@ public class FishSpitInput : MonoBehaviour
         lr.SetWidth(width, width);
         lr.SetPosition(0, start);
         lr.SetPosition(1, end);
+
+        myLine.AddComponent<BoxCollider2D>();
+        BoxCollider2D bc = myLine.GetComponent<BoxCollider2D>();
+        bc.size = new Vector3(Vector3.Distance(start, end), width, 1.0F);
+        bc.transform.position = (start + end) / 2;
+        bc.offset = new Vector2(0.0F, 0.0F);
+        float angle = Mathf.Abs(start.y - end.y) / Mathf.Abs(start.x - end.x);
+        if ((start.y < end.y && start.x > end.x) || (end.y < start.y && end.x > start.x))
+            angle *= -1;
+        angle = Mathf.Rad2Deg * Mathf.Atan(angle);
+        bc.transform.Rotate(0, 0, angle);
+
+
         GameObject.Destroy(myLine, duration);
     }
 
@@ -68,11 +81,7 @@ public class FishSpitInput : MonoBehaviour
             Vector3 firstPos = fly1Pos + dir * -100.0F;
             Vector3 secondPos = fly1Pos + dir * 100.0F;
 
-            DrawLine(
-                //_fliesSelected[0].gameObject.transform.position, 
-                //_fliesSelected[1].gameObject.transform.position, 
-                firstPos, secondPos,
-                Color.yellow, 0.05F);
+            DrawLine(firstPos, secondPos, Color.blue, 0.05F, 30000.0F);
             
             _fliesSelected[1].IsSelected = false;
             _fliesSelected[0].IsSelected = false;
