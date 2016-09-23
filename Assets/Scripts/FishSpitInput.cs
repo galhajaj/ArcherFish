@@ -3,8 +3,11 @@ using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 
+
 public class FishSpitInput : MonoBehaviour 
 {
+    readonly float MIN_DISTANCE_TO_MANAGE_OBJECT = 1.0F;
+
     public Text ScoreText;
 
     private List<Fly> _fliesSelected = new List<Fly>();
@@ -23,27 +26,15 @@ public class FishSpitInput : MonoBehaviour
     {
         ScoreText.text = "Score: " + Score.ToString();
 
-        /*if (Input.touchCount == 1)
+        if (Input.GetMouseButtonDown(0))
         {
-            Touch touch1 = Input.GetTouch(0);
-            Test1Text.text = Camera.main.ScreenToWorldPoint(new Vector3(touch1.position.x, touch1.position.y, 0.0F)).ToString();
+            GameObject closestFlyToClick = findClosestObjectToMousePosition();
+
+            if (closestFlyToClick != null)
+            {
+                closestFlyToClick.GetComponent<Fly>().IsSelected = !closestFlyToClick.GetComponent<Fly>().IsSelected;
+            }
         }
-
-        if (Input.touchCount >= 2)
-        {
-            Touch touch1 = Input.GetTouch(0);
-            Touch touch2 = Input.GetTouch(1);
-
-            Test1Text.text = Camera.main.ScreenToWorldPoint(new Vector3(touch1.position.x, touch1.position.y, 0.0F)).ToString();
-            Test2Text.text = Camera.main.ScreenToWorldPoint(new Vector3(touch2.position.x, touch2.position.y, 0.0F)).ToString();
-
-            Vector3 vec1 = Camera.main.ScreenToWorldPoint(new Vector3(touch1.position.x, touch1.position.y, 0.0F));
-            Vector3 vec2 = Camera.main.ScreenToWorldPoint(new Vector3(touch2.position.x, touch2.position.y, 0.0F));
-            vec1.z = 490.0F;
-            vec2.z = 490.0F;
-
-            DrawLine(vec1, vec2, Color.yellow, 0.05F);
-        }*/
 	}
 
     void DrawLine(Vector3 start, Vector3 end, Color color, float width, float duration = 0.2f)
@@ -97,4 +88,32 @@ public class FishSpitInput : MonoBehaviour
     {
         _fliesSelected.Remove(fly);
     }
+
+private GameObject findClosestObjectToMousePosition()
+{
+    Vector3 mousePosition = new Vector3(Input.mousePosition.x, Input.mousePosition.y);
+    Vector3 mouseWorldPosition = Camera.main.ScreenToWorldPoint(mousePosition);
+    mouseWorldPosition.z = 0.0F;
+
+    GameObject closestObject = null;
+    float closestDistance = 100000.0F;
+    foreach (GameObject obj in GameObject.FindGameObjectsWithTag("Fly"))
+    {
+        if (obj.GetComponent<Fly>() == null)
+            continue;
+
+        float distance = Vector3.Distance(obj.transform.position, mouseWorldPosition);
+        if (distance < closestDistance)
+        {
+            closestDistance = distance;
+            closestObject = obj;
+            //_deltaOfClickFromObject = obj.transform.position - mouseWorldPosition;
+        }
+    }
+
+    if (closestDistance <= MIN_DISTANCE_TO_MANAGE_OBJECT)
+        return closestObject;
+
+    return null;
+}
 }

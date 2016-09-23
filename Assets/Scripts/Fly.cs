@@ -38,10 +38,10 @@ public class Fly : MonoBehaviour
         
 	}
 
-    void OnMouseDown()
+    /*void OnMouseDown()
     {
         IsSelected = !IsSelected;
-    }
+    }*/
 
     void OnCollisionEnter2D(Collision2D coll)
     {
