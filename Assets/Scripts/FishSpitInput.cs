@@ -1,11 +1,14 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using System.Collections.Generic;
 
 public class FishSpitInput : MonoBehaviour 
 {
     public Text Test1Text;
     public Text Test2Text;
+
+    private List<Fly> _fliesSelected = new List<Fly>();
 
 	// Use this for initialization
 	void Start () 
@@ -51,5 +54,33 @@ public class FishSpitInput : MonoBehaviour
         lr.SetPosition(0, start);
         lr.SetPosition(1, end);
         GameObject.Destroy(myLine, duration);
+    }
+
+    public void AddSelectedFly(Fly fly)
+    {
+        _fliesSelected.Add(fly);
+
+        if (_fliesSelected.Count == 2)
+        {
+            Vector3 fly1Pos = _fliesSelected[0].gameObject.transform.position;
+            Vector3 fly2Pos = _fliesSelected[1].gameObject.transform.position;
+            Vector3 dir = (fly1Pos - fly2Pos) / (fly1Pos - fly2Pos).magnitude;
+            Vector3 firstPos = fly1Pos + dir * -100.0F;
+            Vector3 secondPos = fly1Pos + dir * 100.0F;
+
+            DrawLine(
+                //_fliesSelected[0].gameObject.transform.position, 
+                //_fliesSelected[1].gameObject.transform.position, 
+                firstPos, secondPos,
+                Color.yellow, 0.05F);
+            
+            _fliesSelected[1].IsSelected = false;
+            _fliesSelected[0].IsSelected = false;
+        }
+    }
+
+    public void RemoveFly(Fly fly)
+    {
+        _fliesSelected.Remove(fly);
     }
 }
